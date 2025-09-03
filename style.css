@@ -1,0 +1,405 @@
+/* style.css - shared styles for dashboard and admin panel */
+
+:root {
+  --bg-1: #0f2027;
+  --bg-2: #203a43;
+  --bg-3: #2c5364;
+  --panel: rgba(255, 255, 255, 0.06);
+  --accent: #ffcc00;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(120deg, var(--bg-1), var(--bg-2), var(--bg-3));
+  color: #fff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  padding-bottom: 60px;
+}
+
+header {
+  text-align: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.25);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+  border-bottom: 3px solid rgba(255, 255, 255, 0.03);
+}
+header h1 {
+  margin: 0;
+  font-size: 26px;
+  letter-spacing: 1px;
+}
+header p {
+  margin: 6px 0 0;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* Container */
+.container {
+  max-width: 1000px;
+  margin: 30px auto;
+  padding: 0 16px;
+}
+
+/* Ranking list (cards) */
+.ranking-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.team-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: var(--panel);
+  padding: 14px;
+  border-radius: 10px;
+  border-left: 6px solid rgba(255, 255, 255, 0.04);
+  transform-origin: left center;
+  transition: box-shadow 180ms ease, transform 200ms ease;
+  position: relative;
+  overflow: visible;
+  flex-wrap: wrap; /* ✅ allows content to wrap on smaller screens */
+}
+.team-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  transform: translateY(-4px);
+}
+
+.rank {
+  font-weight: 700;
+  font-size: 18px;
+  width: 50px;
+  text-align: center;
+  color: var(--accent);
+}
+.team-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 160px;
+}
+.logo {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 18px;
+  color: #fff;
+  flex: 0 0 56px;
+}
+.team-name {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.medals {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap; /* ✅ medals wrap if space is small */
+}
+.medal {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  min-width: 80px;
+  justify-content: center;
+}
+.gold {
+  color: gold;
+}
+.silver {
+  color: silver;
+}
+.bronze {
+  color: #cd7f32;
+}
+
+.points {
+  font-weight: 800;
+  font-size: 18px;
+  min-width: 90px;
+  text-align: center;
+  color: var(--accent);
+}
+
+/* top-three border colors */
+.team-card.top1 {
+  border-left-color: gold;
+}
+.team-card.top2 {
+  border-left-color: silver;
+}
+.team-card.top3 {
+  border-left-color: #cd7f32;
+}
+
+/* fade-in helper */
+.fade-in {
+  animation: fadeIn 450ms ease both;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Admin form */
+.admin-form {
+  max-width: 420px;
+  margin: 30px auto;
+  background: var(--panel);
+  padding: 18px;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+.admin-form label {
+  display: block;
+  margin-top: 10px;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 600;
+}
+.admin-form input,
+.admin-form select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  border-radius: 8px;
+  border: none;
+  background: rgba(255, 255, 255, 0.02);
+  color: #fff;
+}
+.admin-form button {
+  margin-top: 14px;
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #111;
+  font-weight: 800;
+  cursor: pointer;
+}
+.admin-form button:hover {
+  filter: brightness(0.96);
+}
+
+/* tiny readme area */
+.readme {
+  max-width: 900px;
+  margin: 8px auto;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 13px;
+  text-align: center;
+}
+
+/* 📱 Mobile responsiveness */
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 22px;
+  }
+  .team-card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 12px;
+  }
+  .team-info {
+    min-width: unset;
+  }
+  .medals {
+    justify-content: flex-start;
+  }
+  .points {
+    min-width: unset;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  header h1 {
+    font-size: 20px;
+  }
+  .logo {
+    width: 44px;
+    height: 44px;
+    font-size: 14px;
+  }
+  .team-name {
+    font-size: 16px;
+  }
+  .medal {
+    min-width: unset;
+    font-size: 14px;
+  }
+  .points {
+    font-size: 14px;
+  }
+}
+
+/* Navbar inside header */
+.navbar {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 10px 20px;
+  border-radius: 50px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Navbar Links */
+.navbar a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 15px;
+  position: relative;
+  padding: 8px 14px;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+/* Cool underline animation */
+.navbar a::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 0%;
+  height: 2px;
+  background: var(--accent);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+  border-radius: 2px;
+}
+
+.navbar a:hover::after {
+  width: 80%;
+}
+
+.navbar a:hover {
+  color: var(--accent);
+  transform: translateY(-2px);
+}
+
+/* Active link highlight */
+.navbar a.active {
+  color: var(--accent);
+}
+
+.navbar a.active::after {
+  width: 80%;
+}
+
+/* Mobile-friendly navbar */
+@media (max-width: 480px) {
+  .navbar {
+    gap: 14px;
+    padding: 8px 14px;
+  }
+  .navbar a {
+    font-size: 14px;
+    padding: 6px 10px;
+  }
+}
+
+/* Modal Background */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 1000;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(3px);
+  justify-content: center;
+  align-items: center;
+}
+
+/* Modal Box */
+.modal-content {
+  background: rgba(255,255,255,0.08);
+  padding: 20px;
+  border-radius: 12px;
+  width: 300px;
+  text-align: center;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+  animation: fadeIn 0.3s ease;
+}
+
+/* Close Button */
+.close-btn {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  font-size: 28px;
+  cursor: pointer;
+  color: #fff;
+}
+
+.modal-content h2 {
+  margin-bottom: 14px;
+  color: var(--accent);
+}
+
+.modal-content input {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+}
+
+.modal-content button {
+  width: 100%;
+  padding: 10px;
+  background: var(--accent);
+  color: #111;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.modal-content button:hover {
+  filter: brightness(0.95);
+}
+
+.error-text {
+  color: red;
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+/* Shake animation for wrong password */
+@keyframes shake {
+  0% { transform: translateX(0px); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0px); }
+}
+
+
