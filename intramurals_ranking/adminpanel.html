@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Intramurals Admin Panel</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Admin Panel - Update Medals</h1>
+    <nav class="navbar">
+      <a href="index.html">🏆 Dashboard</a>
+      <a href="adminpanel.html">⚙️ Admin Panel</a>
+      <a href="#about">ℹ️ About</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="admin-form fade-in">
+      <label for="teamSelect">Select or type team name</label>
+      <input id="teamInput" list="teamsDatalist" placeholder="e.g. Grade 7" />
+      <datalist id="teamsDatalist"></datalist>
+
+      <label for="gold">Gold</label>
+      <input id="gold" type="number" min="0" value="0" />
+
+      <label for="silver">Silver</label>
+      <input id="silver" type="number" min="0" value="0" />
+
+      <label for="bronze">Bronze</label>
+      <input id="bronze" type="number" min="0" value="0" />
+
+      <button id="update-btn">Update Medals</button>
+    </div>
+  </div>
+
+  <script type="module">
+    import { db, ref, set, onValue } from './firebase-config.js';
+
+    const teamInput = document.getElementById('teamInput');
+    const datalist = document.getElementById('teamsDatalist');
+    const goldInput = document.getElementById('gold');
+    const silverInput = document.getElementById('silver');
+    const bronzeInput = document.getElementById('bronze');
+    const updateBtn = document.getElementById('update-btn');
+
+    // populate datalist from DB and optionally preload selected team values
+    onValue(ref(db, 'teams'), snap => {
+      const data = snap.val() || {};
+      datalist.innerHTML = '';
+      Object.keys(data).forEach(team => {
+        const opt = document.createElement('option');
+        opt.value = team;
+        datalist.appendChild(opt);
+      });
+    });
+
+    // when a team is typed/selected, load its current counts (if any)
+    teamInput.addEventListener('change', () => {
+      const team = teamInput.value.trim();
+      if (!team) return;
+      onValue(ref(db, 'teams/' + team), snap => {
+        const d = snap.val();
+        goldInput.value = d && d.gold ? d.gold : 0;
+        silverInput.value = d && d.silver ? d.silver : 0;
+        bronzeInput.value = d && d.bronze ? d.bronze : 0;
+      }, { onlyOnce:true });
+    });
+
+    updateBtn.addEventListener('click', async () => {
+      const team = teamInput.value.trim();
+      const gold = parseInt(goldInput.value) || 0;
+      const silver = parseInt(silverInput.value) || 0;
+      const bronze = parseInt(bronzeInput.value) || 0;
+      if (!team){ alert('Please enter or select a team name'); return; }
+
+      try{
+        await set(ref(db, 'teams/' + team), { gold, silver, bronze });
+        alert(team + ' updated!');
+      }catch(err){
+        alert('Error: ' + err);
+      }
+    });
+  </script>
+</body>
+</html>

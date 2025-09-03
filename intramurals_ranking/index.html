@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>Intramurals Ranking Dashboard</title>
+        <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <header>
+        <h1>Manolo Fortich National High School Intramurals 2025</h1>
+        <p>Live Medal Count — Sports Ranking</p>
+
+        <nav class="navbar">
+          <a href="index.html">🏆 Dashboard</a>
+          <a href="adminpanel.html">⚙️ Admin Panel</a>
+          <a href="#about">ℹ️ About</a>
+        </nav>
+
+        <!-- Login Modal -->
+        <div id="loginModal" class="modal">
+          <div class="modal-content">
+            <span id="closeModal" class="close-btn">&times;</span>
+            <h2>Admin Login</h2>
+            <input type="text" id="loginUser" placeholder="Username" />
+            <input type="password" id="loginPass" placeholder="Password" />
+            <button id="loginBtn">Login</button>
+            <p id="loginError" class="error-text"></p>
+          </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div id="rankingList" class="ranking-list fade-in">
+          <!-- Team cards injected here Tables are Loaded from database -->
+        </div>
+        <div class="readme">Only Gold, Silver, and Bronze are being counted</div>
+    </div>
+
+  <script type="module">
+        //Database Connection
+        import { db, ref, onValue } from './firebase-config.js';
+
+        // Helper: create element for team
+              function createTeamCard(team, data, index){
+              const card = document.createElement('div');
+              card.className = 'team-card ' + (index===0?'top1 ':index===1?'top2 ':index===2?'top3 ':'') + 'fade-in';
+              card.dataset.team = team;
+              card.innerHTML = `
+                  <div class="rank">#${index+1}</div>
+                  <div class="team-info">
+                      <div class="logo">${data.logo || team.charAt(0).toUpperCase()}</div>
+                      <div class="team-name">${team}</div>
+                  </div>
+                  <div class="medals">
+                      <div class="medal gold">🥇 ${data.gold}</div>
+                      <div class="medal silver">🥈 ${data.silver}</div>
+                      <div class="medal bronze">🥉 ${data.bronze}</div>
+                  </div>
+                      <div class="points">${(data.gold*3 + data.silver*2 + data.bronze)} pts</div>`;
+      return card;
+    }
+
+      // FLIP animation: smoothly animate items when order changes
+          function animateReorder(container, newNodes){
+                // record old positions
+                const oldRects = new Map();
+                container.querySelectorAll('.team-card').forEach(node => {
+                oldRects.set(node.dataset.team, node.getBoundingClientRect());
+            });
+
+        // remove old nodes not in newNodes, and add/replace others
+        // Build a fragment with new nodes (but keep reference to existing nodes when possible)
+            const fragment = document.createDocumentFragment();
+            newNodes.forEach(n => fragment.appendChild(n));
+
+        // Apply new order in DOM (without animation yet)
+            container.innerHTML = '';
+            container.appendChild(fragment);
+
+        // record new positions and play FLIP
+        container.querySelectorAll('.team-card').forEach(node => {
+                const team = node.dataset.team;
+                const oldRect = oldRects.get(team);
+                const newRect = node.getBoundingClientRect();
+        if (oldRect){
+                const dx = oldRect.left - newRect.left;
+                const dy = oldRect.top - newRect.top;
+          if (dx || dy){
+                // invert
+                node.style.transform = `translate(${dx}px, ${dy}px)`;
+                node.style.transition = 'transform 0s';
+                // play
+            requestAnimationFrame(() => {
+                node.style.transition = 'transform 420ms cubic-bezier(.2,.9,.2,1)';
+                node.style.transform = '';
+            });
+            }
+          } else {
+          // new node: fade/scale in
+              node.style.transform = 'translateY(8px) scale(.98)';
+              node.style.opacity = '0';
+            requestAnimationFrame(()=>{
+              node.style.transition = 'transform 420ms cubic-bezier(.2,.9,.2,1), opacity 340ms ease';
+              node.style.transform = '';
+              node.style.opacity = '1';
+          });
+        }
+      });
+    }
+      //Fetch Data to Database
+        const container = document.getElementById('rankingList');
+
+        onValue(ref(db, 'teams'), (snap) => {
+        const data = snap.val() || {};
+      // convert to array and compute points
+        const arr = Object.entries(data).map(([name, d]) => ({
+            name,
+            gold: Number(d.gold || 0),
+            silver: Number(d.silver || 0),
+            bronze: Number(d.bronze || 0),
+            logo: d.logo || "", // ✅ include logo
+            points: (Number(d.gold||0)*3 + Number(d.silver||0)*2 + Number(d.bronze||0))
+        }));
+
+        // sort by points desc, then gold,silver,bronze as tie-breakers
+        arr.sort((a,b)=> b.points - a.points || b.gold - a.gold || b.silver - a.silver || b.bronze - a.bronze);
+
+        // create new nodes in the new order
+        const newNodes = arr.map((t,i)=> createTeamCard(t.name, t, i));
+        animateReorder(container, newNodes);
+      });
+  </script>
+  
+  <script type="module">
+        import { db, ref, onValue } from './firebase-config.js';
+        console.log("🔍 Testing Firebase connection...");
+        onValue(ref(db, "teams"), (snapshot) => {
+          console.log("✅ Firebase connected! Data:", snapshot.val());
+        }, (error) => {
+          console.error("❌ Firebase error:", error);
+        });
+  </script>
+
+  <script type="module">
+        import { db, ref, get } from './firebase-config.js';
+
+// Elements
+const modal = document.getElementById('loginModal');
+const closeModal = document.getElementById('closeModal');
+const loginBtn = document.getElementById('loginBtn');
+const loginError = document.getElementById('loginError');
+
+// Show modal on "Admin Panel" click
+document.querySelector('a[href="adminpanel.html"]').addEventListener('click', (e) => {
+  e.preventDefault();
+  modal.style.display = 'flex';
+});
+
+// Close modal
+closeModal.onclick = () => modal.style.display = 'none';
+window.onclick = (e) => { if (e.target === modal) modal.style.display = 'none'; };
+
+// Handle login
+loginBtn.addEventListener('click', async () => {
+  const username = document.getElementById('loginUser').value.trim();
+  const password = document.getElementById('loginPass').value.trim();
+
+  if (!username || !password) {
+    loginError.textContent = "Please enter both fields.";
+    return;
+  }
+
+  // Get account from Firebase
+  const snapshot = await get(ref(db, "accounts"));
+  const account = snapshot.val();
+
+  if (account.username === username && account.password == password) {
+    window.location.href = "adminpanel.html";
+  } else {
+    loginError.textContent = "Invalid credentials.";
+    document.querySelector('.modal-content').style.animation = "shake 0.3s";
+    setTimeout(() => {
+      document.querySelector('.modal-content').style.animation = "";
+    }, 300);
+  }
+  });
+  </script>
+
+</body>
+</html>
