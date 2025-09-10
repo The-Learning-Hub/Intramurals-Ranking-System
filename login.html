@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin Login - Intramurals</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<header>
+        <h1>Manolo Fortich National High School Intramurals 2025</h1>
+        <p>Live Medal Count — Sports Ranking</p>
+
+        <nav class="navbar">
+          <a href="index.html">🏆 Dashboard</a>
+          <a href="login.html">⚙️ Admin Panel</a>
+          <a href="#about">ℹ️ About</a>
+        </nav>
+</header>
+        <div class="container-login">
+          <h2>🔐 Admin Login</h2>
+          <input type="text" id="loginUser" placeholder="Username" />
+          <input type="password" id="loginPass" placeholder="Password" />
+          <button id="loginBtn">Login</button>
+          <p id="loginError" class="error-text"></p>
+          <a href="index.html" class="back-link">⬅ Back to Dashboard</a>
+        </div>
+
+        <!-- Para sa log-in ni -->
+         <script type="module">
+  import { db, ref, onValue } from "./firebase-config.js";
+
+  const loginBtn = document.getElementById("loginBtn");
+  const loginUser = document.getElementById("loginUser");
+  const loginPass = document.getElementById("loginPass");
+  const loginError = document.getElementById("loginError");
+
+  loginBtn.addEventListener("click", () => {
+    const username = loginUser.value.trim();
+    const password = loginPass.value.trim();
+
+    if (!username || !password) {
+      loginError.textContent = "⚠ Please enter both username and password.";
+      return;
+    }
+
+    // Reference to Firebase accounts
+    const accountRef = ref(db, "accounts/admin1");
+    onValue(
+      accountRef,
+      (snapshot) => {
+        if (snapshot.exists()) {
+          const data = snapshot.val();
+          if (username === data.username && password === data.password) {
+            // ✅ Successful login → redirect
+            window.location.href = "adminpanel.html";
+          } else {
+            // ❌ Wrong credentials
+            loginError.textContent = "❌ Invalid username or password.";
+          }
+        } else {
+          loginError.textContent = "⚠ No account found in database.";
+        }
+      },
+      {
+        onlyOnce: true, // ✅ run once, not live listener
+      }
+    );
+  });
+</script>
+
+</body>
+</html>
