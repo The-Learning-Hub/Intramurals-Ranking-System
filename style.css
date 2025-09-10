@@ -402,4 +402,77 @@ header p {
   100% { transform: translateX(0px); }
 }
 
+/* =========================
+   Login Page Styles
+========================= */
+.container-login {
+  max-width: 400px;
+  margin: 60px auto;
+  padding: 24px;
+  background: var(--panel);
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+  text-align: center;
+}
+
+.container-login h2 {
+  margin-bottom: 20px;
+  color: var(--accent);
+  font-size: 22px;
+}
+
+.container-login input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-size: 15px;
+}
+
+.container-login input:focus {
+  outline: 2px solid var(--accent);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.container-login button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 14px;
+  border: none;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #111;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 16px;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.container-login button:hover {
+  filter: brightness(0.95);
+  transform: translateY(-2px);
+}
+
+.error-text {
+  color: #ff4d4d;
+  font-size: 14px;
+  margin-top: 8px;
+  min-height: 18px; /* keeps space even if empty */
+}
+
+.back-link {
+  display: inline-block;
+  margin-top: 18px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.3s ease;
+}
+
+.back-link:hover {
+  color: var(--accent);
+}
 
