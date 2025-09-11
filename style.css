@@ -15,12 +15,18 @@
 body {
   margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(120deg, #1a4d2e, #0d3b29, #021f16);
+
+  /* 🌄 Background with fallback */
+  background: linear-gradient(120deg, #1a4d2e, #0d3b29, #021f16),
+              url("images/background.jpg") no-repeat center center fixed;
+  background-size: cover;
+
   color: #fff;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   padding-bottom: 60px;
 }
+
 
 header {
   text-align: center;
@@ -475,4 +481,69 @@ header p {
 .back-link:hover {
   color: var(--accent);
 }
+/* Developer Section */
+.dev-section {
+  margin-top: 30px;
+  text-align: left;
+}
 
+.dev-title {
+  margin-bottom: 15px;
+  color: var(--accent);
+  font-size: 22px;
+  text-align: center;
+}
+
+.developer-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto;
+  max-width: 400px;
+  display: grid;
+  gap: 10px;
+}
+
+.developer-list li {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.developer-list li:hover {
+  transform: translateX(6px);
+  background: rgba(255, 255, 255, 0.15);
+}
+.about {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.about h2 {
+  color: var(--accent);
+  margin-bottom: 20px;
+}
+
+.about-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.about-cards .card {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.about-cards .card:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5);
+}

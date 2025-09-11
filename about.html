@@ -1,36 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <title>Intramurals Ranking Dashboard</title>
-        <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>About - Intramurals</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <header>
-        <h1>Manolo Fortich National High School Intramurals 2025</h1>
-        <p>Live Medal Count — Sports Ranking</p>
+  <header>
+    <h1>About This Project</h1>
+    <nav class="navbar">
+      <a href="index.html">🏆 Dashboard</a>
+      <a href="login.html">⚙️ Admin Panel</a>
+      <a href="about.html" class="active">ℹ️ About</a>
+    </nav>
+  </header>
 
-        <nav class="navbar">
-          <a href="index.html">🏆 Dashboard</a>
-          <a href="login.html">⚙️ Admin Panel</a>
-          <a href="about.html">ℹ️ About</a>
-        </nav>
-    </header>
+  <div class="container">
+    <div class="about fade-in">
+      <h2>🎉 Welcome to the Intramurals Ranking System</h2>
+      <p>
+        This platform tracks medal counts for Manolo Fortich National High School 
+        Intramurals 2025 in real-time using Firebase.
+      </p>
 
-    <div class="container-login">
-        <h2>This Site is in Testing Mode</h2>
-        <h2>Developed by NanoNova Robotics Club - Programming Division</h2>
-        <div class="readme">Still in Development...</div>
+      <!-- ✅ Feature Cards (unchanged) -->
+      <div class="about-cards">
+        <div class="card">
+          <h3>🚀 Developed By</h3>
+          <p>NanoNova Robotics Club – Programming Division</p>
+        </div>
+        <div class="card">
+          <h3>🎯 Purpose</h3>
+          <p>
+            To provide transparency, accessibility, and excitement by updating 
+            medal counts instantly.
+          </p>
+        </div>
+        <div class="card">
+          <h3>💡 Features</h3>
+          <ul>
+            <li>Live medal tally</li>
+            <li>Smooth animations & ranking updates</li>
+            <li>Admin panel for updating scores</li>
+            <li>Mobile-friendly interface</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ✅ Developer List (not carded) -->
+      <div class="dev-section fade-in">
+        <h3 class="dev-title">👨‍💻 Developers Of the Project</h3>
+        <ul class="developer-list">
+          <li><span>🧑‍🎨</span> Walter Luke III  – Overseer </li>
+          <li><span>🧑‍💻</span> Bien Dy – Main Project Developer</li>
+          <li><span>👩‍💻</span> James Clever - Co-Project Developer</li>
+          <li><span>🧑🎨</span> Anwhar – Graphics and Styling</li>
+          <li><span>👩‍🔬</span> Elijah Mitch – Testing and Minor Debugging </li>
+        </ul>
+      </div>
     </div>
+  </div>
 
+  <script>
+    // 🎨 Random background images
+    const backgrounds = [
+      "images/bg1.jpg",
+      "images/bg2.jpg",
+      "images/bg3.jpg",
+      "images/bg4.jpg"
+    ];
+    document.body.style.backgroundImage =
+      `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url("${
+        backgrounds[Math.floor(Math.random() * backgrounds.length)]
+      }")`;
 
- <script>
-	//Prevent Right Click / Context Menu
-	document.addEventListener('contextmenu', function (e) {
-	e.preventDefault();
-        });
-</script>
-
+    // Prevent right-click
+    document.addEventListener("contextmenu", (e) => e.preventDefault());
+  </script>
 </body>
 </html>
